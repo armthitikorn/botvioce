@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบโต้ตอบด้วยเสียง</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; }
+    #response { margin-top: 20px; font-size: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>ระบบโต้ตอบด้วยเสียง</h1>
+  <button onclick="startListening()">🎙️ พูดเลย</button>
+  <div id="response">รอฟังคำพูดของคุณ...</div>
+
+  <script>
+    const responseDiv = document.getElementById("response");
+
+    function startListening() {
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'th-TH';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = async function(event) {
+        const userSpeech = event.results[0][0].transcript;
+        responseDiv.innerHTML = `คุณพูดว่า: "${userSpeech}"<br>กำลังประมวลผล...`;
+
+        // ส่งข้อความไปยัง AI (สมมุติว่าใช้ GPT API)
+        const aiReply = await fetch("https://your-ai-api.com/reply", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userSpeech })
+        }).then(res => res.json());
+
+        const replyText = aiReply.reply || "ขออภัย ไม่เข้าใจคำพูดของคุณ";
+        responseDiv.innerHTML += `<br>ระบบตอบกลับ: "${replyText}"`;
+
+        // แปลงข้อความเป็นเสียง
+        const utterance = new SpeechSynthesisUtterance(replyText);
+        utterance.lang = 'th-TH';
+        speechSynthesis.speak(utterance);
+      };
+
+      recognition.onerror = function(event) {
+        responseDiv.innerHTML = "เกิดข้อผิดพลาด: " + event.error;
+      };
+
+      recognition.start();
+    }
+  </script>
+</body>
+</html>
