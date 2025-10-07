@@ -17,7 +17,7 @@
       <button class="btn btn-primary mb-2" onclick="startRecording()">🎙️ เริ่มบันทึกเสียง</button>
       <button class="btn btn-danger mb-2" onclick="stopRecording()">⏹️ หยุดบันทึก</button>
       <audio id="employee-response" controls class="mb-2"></audio>
-      #⬇️ ดาวน์โหลดเสียง</a>
+      <a id="downloadียง</a>
 
       <div id="uploaded-link" class="mt-2"></div>
 
@@ -113,7 +113,7 @@
     function getSectionTitle(part) {
       switch (part) {
         case "part1": return "ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย";
-        case "part2": return "ส่วนที่ 2: ตอบคำถามแก้ไขความกังวลเรื่องความคุ้มครอง";
+        case "part "ส่วนที่ 2: ตอบคำถามแก้ไขความกังวลเรื่องความคุ้มครอง";
         case "part3": return "ส่วนที่ 3: โน้มน้าวหลังปิดการขาย";
         default: return "";
       }
@@ -170,10 +170,10 @@
             .getPublicUrl(filename);
 
           const publicUrl = publicUrlData.publicUrl;
-          console.log("Public URL:", publicUrl);
-
           document.getElementById("uploaded-link").innerHTML =
-            `<a href="${publicUrl}" target="_blank" class="btn btn-link
+            `<a href="${publicิดไฟล์ที่อัปโหลด</a>`;
+        }
+      };
     }
 
     window.stopRecording = function() {
