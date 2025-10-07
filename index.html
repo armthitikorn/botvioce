@@ -1,53 +1,161 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>ระบบโต้ตอบด้วยเสียง</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 50px; }
-    #response { margin-top: 20px; font-size: 1.2em; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนเข้าสู่ระบบ</title>
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: #004085;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #messageBox {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <h1>ระบบโต้ตอบด้วยเสียง</h1>
-  <button onclick="startListening()">🎙️ พูดเลย</button>
-  <div id="response">รอฟังคำพูดของคุณ...</div>
+    <div class="container">
+        <h2>ลงทะเบียนผู้เข้าสอบ</h2>
+        <form id="loginForm">
+            <label for="name">ชื่อ-นามสกุล:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label for="email">อีเมล:</label>
+            <input type="email" id="email" name="email" required><br>
+            <label for="department">แผนก:</label>
+            <input type="text" id="department" name="department"><br><br>
+            <button type="submit">เข้าสู่ระบบ</button>
+        </form>
+        <div id="messageBox"></div>
+    </div>
 
-  <script>
-    const responseDiv = document.getElementById("response");
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    function startListening() {
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = 'th-TH';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
+        // 1. ตั้งค่า Supabase Client
+         const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6d3lvdHp6eHljcWZ3ZXJjYWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNTg3MTMsImV4cCI6MjA3MjYzNDcxM30.lgiAf9oBUqsaWGb3u_80wuoKAODQHE_lIBxpGumhrno';
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-      recognition.onresult = async function(event) {
-        const userSpeech = event.results[0][0].transcript;
-        responseDiv.innerHTML = `คุณพูดว่า: "${userSpeech}"<br>กำลังประมวลผล...`;
+        const form = document.getElementById('loginForm');
+        const messageBox = document.getElementById('messageBox');
 
-        // ส่งข้อความไปยัง AI (สมมุติว่าใช้ GPT API)
-        const aiReply = await fetch("https://your-ai-api.com/reply", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userSpeech })
-        }).then(res => res.json());
+        function showMessage(text, isError = false) {
+            messageBox.textContent = text;
+            messageBox.style.display = 'block';
+            messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d1e7dd';
+            messageBox.style.color = isError ? '#721c24' : '#0f5132';
+        }
 
-        const replyText = aiReply.reply || "ขออภัย ไม่เข้าใจคำพูดของคุณ";
-        responseDiv.innerHTML += `<br>ระบบตอบกลับ: "${replyText}"`;
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        // แปลงข้อความเป็นเสียง
-        const utterance = new SpeechSynthesisUtterance(replyText);
-        utterance.lang = 'th-TH';
-        speechSynthesis.speak(utterance);
-      };
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const department = document.getElementById('department').value;
+            
+            showMessage('กำลังประมวลผล...', false);
 
-      recognition.onerror = function(event) {
-        responseDiv.innerHTML = "เกิดข้อผิดพลาด: " + event.error;
-      };
+            try {
+                // ตรวจสอบว่ามีผู้ใช้คนนี้อยู่แล้วหรือไม่
+                const { data: userData, error: userError } = await supabase
+                    .from('profiles') // สมมติว่าคุณมีตาราง 'profiles' เพื่อเก็บข้อมูลเพิ่มเติม
+                    .select('*')
+                    .eq('email', email)
+                    .single();
 
-      recognition.start();
-    }
-  </script>
+                if (userData) {
+                    // ถ้ามีผู้ใช้คนนี้อยู่แล้ว ให้แสดงข้อความและไม่ต้องทำอะไรต่อ
+                    showMessage('อีเมลนี้ถูกใช้แล้ว กรุณาใช้อีเมลอื่น', true);
+                    return;
+                }
+
+                // 2. ใช้ signUp เพื่อสร้าง User และบันทึกข้อมูล
+                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                    email: email,
+                    // สร้างรหัสผ่านแบบสุ่ม เพื่อให้ไม่ซ้ำกัน
+                    password: Math.random().toString(36).slice(-8), 
+                    options: {
+                        data: {
+                            full_name: name,
+                            department: department
+                        }
+                    }
+                });
+
+                if (signUpError) {
+                    showMessage(`เกิดข้อผิดพลาดในการลงทะเบียน: ${signUpError.message}`, true);
+                } else {
+                    showMessage('ลงทะเบียนสำเร็จ! กำลังนำทาง...', false);
+                    // 3. หลังจากลงทะเบียนสำเร็จ ให้ส่งผู้ใช้ไปหน้าถัดไปทันที
+                    setTimeout(() => {
+                        window.location.href = "index2.html";
+                    }, 1500);
+                }
+            } catch (err) {
+                console.error(err);
+                showMessage(`เกิดข้อผิดพลาด: ${err.message}`, true);
+            }
+        });
+    </script>
 </body>
 </html>
+
