@@ -1,134 +1,34 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>แบบทดสอบการขายประกันชีวิตและสุขภาพ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <style>
-    body {
-      font-family: 'Tahoma', sans-serif;
-      background: #f0f2f5;
-      padding: 20px;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .container {
-      max-width: 800px;
-      width: 100%;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #004085;
-      margin-bottom: 10px;
-    }
-    .question {
-      background: #f8f9fa;
-      border: 1px solid #e2e6ea;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    }
-    .question p {
-      font-weight: bold;
-      color: #0056b3;
-      margin-bottom: 15px;
-      font-size: 1.1em;
-    }
-    .control-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background-color 0.3s ease, transform 0.2s;
-    }
-    button:hover {
-      transform: translateY(-2px);
-    }
-    button:active {
-      transform: translateY(0);
-    }
-    button:disabled {
-      background-color: #e0e0e0 !important;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .start-btn { background-color: #28a745; color: white; }
-    .stop-btn { background-color: #dc3545; color: white; }
-    .download-btn { background-color: #007bff; color: white; }
-    audio {
-      width: 100%;
-      margin-top: 15px;
-      display: none;
-    }
-    .message-box {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #d1e7dd;
-      color: #0f5132;
-      border: 1px solid #badbcc;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      display: none;
-      z-index: 1000;
-    }
-    .upload-progress {
-      width: 100%;
-      height: 25px;
-      background-color: #e9ecef;
-      border-radius: 5px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      background-color: #007bff;
-      width: 0%;
-      transition: width 0.4s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      font-size: 0.9em;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Roleplay Test - ประกันชีวิตและสุขภาพ</title>
+  https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
+  data:,
 </head>
-<body>
-  <div class="container">
-    <h1>แบบทดสอบการขายประกันชีวิตและสุขภาพ</h1>
-    <div class="question">
-      <p id="questionText">กำลังโหลดคำถาม...</p>
-      <div class="control-buttons">
-        <button class="start-btn" onclick="startRecording()">เริ่มบันทึกเสียง</button>
-        <button class="stop-btn" onclick="stopRecording()">หยุดบันทึก</button>
-        <button class="download-btn" id="downloadBtn" style="display:none;">ดาวน์โหลดเสียง</button>
-      </div>
-      <audio id="audioPlayback" controls></audio>
-      <div class="upload-progress">
-        <div class="progress-bar" id="progressBar">0%</div>
-      </div>
+<body class="bg-light">
+  <div class="container py-5">
+    <h2 class="mb-4 text-center">Roleplay Test สำหรับพนักงานขายประกัน</h2>
+
+    <div id="test-section" class="mb-4">
+      <h4 id="section-title">ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย</h4>
+      <p id="question-text" class="lead"></p>
+
+      <button class="btn btn-primary mb-2" onclick="startRecording()">🎙️ เริ่มบันทึกเสียง</button>
+      <button class="btn btn-danger mb-2" onclick="stopRecording()">⏹️ หยุดบันทึก</button>
+      <audio id="employee-response" controls class="mb-2"></audio>
+      #⬇️ ดาวน์โหลดเสียง</a>
+
+      <div id="uploaded-link" class="mt-2"></div>
+
+      <button class="btn btn-success" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
     </div>
-    <button onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+
+    <div class="mt-4">
+      <button class="btn btn-outline-secondary me-2" onclick="startPart('part1')">เริ่มส่วนที่ 1</button>
+      <button class="btn btn-outline-secondary me-2" onclick="startPart('part2')">เริ่มส่วนที่ 2</button>
+      <button class="btn btn-outline-secondary" onclick="startPart('part3')">เริ่มส่วนที่ 3</button>
+    </div>
   </div>
 
   <script type="module">
@@ -136,22 +36,59 @@
     import { v4 as uuidv4 } from 'https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/esm-browser/index.js';
 
     const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6d3lvdHp6eHljcWZ3ZXJjYWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNTg3MTMsImV4cCI6MjA3MjYzNDcxM30.lgiAf9oBUqsaWGb3u_80wuoKAODQHE_lIBxpGumhrno';
+    const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'; // ใส่คีย์ของคุณ
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const questions = [
-      "ลูกค้าบอกว่าไม่สนใจตั้งแต่ต้นสาย",
-      "ไม่สะดวกคุยตอนนี้ครับ/ค่ะ",
-      "ไม่รับสายขายของครับ/ค่ะ",
-      "ไม่สนใจประกันครับ/ค่ะ",
-      "มีประกันอยู่แล้วครับ/ค่ะ",
-      "ไม่อยากเสียเวลา",
-      "ไม่เคยซื้อของทางโทรศัพท์",
-      "ไม่ไว้ใจการขายทางโทรศัพท์",
-      "ไม่อยากให้ข้อมูลส่วนตัว",
-      "ไม่สนใจเรื่องสุขภาพตอนนี้"
-    ];
+    const questions = {
+      part1: [
+        { text: "ขอโทษครับ/ค่ะ ไม่สนใจตั้งแต่ต้นสาย" },
+        { text: "ไม่สะดวกคุยตอนนี้ครับ/ค่ะ" },
+        { text: "ไม่รับสายขายของครับ/ค่ะ" },
+        { text: "ไม่สนใจประกันครับ/ค่ะ" },
+        { text: "มีประกันอยู่แล้วครับ/ค่ะ" },
+        { text: "ไม่อยากเสียเวลา" },
+        { text: "ไม่เคยซื้อของทางโทรศัพท์" },
+        { text: "ไม่ไว้ใจการขายทางโทรศัพท์" },
+        { text: "ไม่อยากให้ข้อมูลส่วนตัว" },
+        { text: "ไม่สนใจเรื่องสุขภาพตอนนี้" }
+      ],
+      part2: [
+        { text: "ประกันสุขภาพครอบคลุมโรคเรื้อรังหรือไม่?" },
+        { text: "ถ้าเข้าโรงพยาบาลเอกชนจะจ่ายเต็มไหม?" },
+        { text: "มีค่าห้องสูงสุดเท่าไหร่?" },
+        { text: "ต้องสำรองจ่ายก่อนหรือไม่?" },
+        { text: "มีเงื่อนไขการเคลมอะไรบ้าง?" },
+        { text: "ถ้าเป็นโรคที่มีมาก่อนจะคุ้มครองไหม?" },
+        { text: "มีระยะเวลารอคอยหรือไม่?" },
+        { text: "เบี้ยประกันปรับขึ้นทุกปีหรือไม่?" },
+        { text: "สามารถใช้ร่วมกับสิทธิ์ประกันสังคมได้ไหม?" },
+        { text: "มีวงเงินคุ้มครองสูงสุดเท่าไหร่?" },
+        { text: "ถ้าไม่ได้ใช้บริการเลย จะได้เงินคืนไหม?" },
+        { text: "มีบริการเคลมออนไลน์หรือไม่?" },
+        { text: "สามารถเลือกโรงพยาบาลเองได้ไหม?" },
+        { text: "มีคุ้มครองกรณีอุบัติเหตุหรือไม่?" },
+        { text: "ถ้าเปลี่ยนงานจะยังใช้ประกันได้ไหม?" },
+        { text: "มีคุ้มครองกรณีโรคร้ายแรงหรือไม่?" },
+        { text: "สามารถซื้อให้ครอบครัวได้ไหม?" },
+        { text: "มีบริการช่วยเหลือฉุกเฉินหรือไม่?" },
+        { text: "มีเงื่อนไขการยกเลิกกรมธรรม์อย่างไร?" },
+        { text: "สามารถจ่ายเบี้ยผ่านบัตรเครดิตได้ไหม?" }
+      ],
+      part3: [
+        { text: "คิดว่าแพงเกินไปครับ/ค่ะ" },
+        { text: "ขอคิดดูก่อนครับ/ค่ะ" },
+        { text: "ต้องปรึกษาครอบครัวก่อนครับ/ค่ะ" },
+        { text: "ยังไม่พร้อมตัดสินใจครับ/ค่ะ" },
+        { text: "ไม่มั่นใจในบริษัทครับ/ค่ะ" },
+        { text: "กลัวถูกหลอกครับ/ค่ะ" },
+        { text: "มีประกันอยู่แล้วครับ/ค่ะ" },
+        { text: "ไม่เห็นความจำเป็นครับ/ค่ะ" },
+        { text: "ไม่อยากผูกมัดระยะยาวครับ/ค่ะ" },
+        { text: "ไม่มั่นใจว่าจะได้ใช้ครับ/ค่ะ" }
+      ]
+    };
 
+    let currentPart = "part1";
     let shuffledQuestions = [];
     let currentIndex = 0;
     let mediaRecorder;
@@ -166,20 +103,41 @@
       return shuffled;
     }
 
-    window.nextQuestion = function () {
+    window.startPart = function(partName) {
+      currentPart = partName;
+      shuffledQuestions = shuffle(questions[partName]);
+      currentIndex = 0;
+      loadQuestion();
+    }
+
+    function getSectionTitle(part) {
+      switch (part) {
+        case "part1": return "ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย";
+        case "part2": return "ส่วนที่ 2: ตอบคำถามแก้ไขความกังวลเรื่องความคุ้มครอง";
+        case "part3": return "ส่วนที่ 3: โน้มน้าวหลังปิดการขาย";
+        default: return "";
+      }
+    }
+
+    function loadQuestion() {
+      const q = shuffledQuestions[currentIndex];
+      document.getElementById("section-title").textContent = getSectionTitle(currentPart);
+      document.getElementById("question-text").textContent = q.text;
+      document.getElementById("employee-response").src = "";
+      document.getElementById("download-link").href = "#";
+      document.getElementById("uploaded-link").innerHTML = "";
+    }
+
+    window.nextQuestion = function() {
       currentIndex++;
       if (currentIndex < shuffledQuestions.length) {
-        document.getElementById("questionText").textContent = shuffledQuestions[currentIndex];
-        document.getElementById("audioPlayback").style.display = "none";
-        document.getElementById("downloadBtn").style.display = "none";
-        document.getElementById("progressBar").style.width = "0%";
-        document.getElementById("progressBar").textContent = "0%";
+        loadQuestion();
       } else {
-        alert("จบคำถามแล้ว");
+        alert("จบคำถามในส่วนนี้แล้ว กรุณาเลือกส่วนถัดไป");
       }
-    };
+    }
 
-    window.startRecording = async function () {
+    window.startRecording = async function() {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();
@@ -192,12 +150,11 @@
       mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
         const audioUrl = URL.createObjectURL(audioBlob);
-        document.getElementById("audioPlayback").src = audioUrl;
-        document.getElementById("audioPlayback").style.display = "block";
-        document.getElementById("downloadBtn").style.display = "inline-block";
+        document.getElementById("employee-response").src = audioUrl;
+        document.getElementById("download-link").href = audioUrl;
 
         const filename = `response_${uuidv4()}.webm`;
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
           .from('responses')
           .upload(filename, audioBlob, {
             contentType: 'audio/webm',
@@ -205,29 +162,27 @@
           });
 
         if (error) {
-          alert("เกิดข้อผิดพลาดในการอัปโหลดเสียง");
           console.error("Upload failed:", error.message);
+          alert("เกิดข้อผิดพลาดในการอัปโหลดเสียง");
         } else {
-          document.getElementById("progressBar").style.width = "100%";
-          document.getElementById("progressBar").textContent = "อัปโหลดสำเร็จ";
-          document.getElementById("downloadBtn").onclick = () => {
-            const a = document.createElement("a");
-            a.href = audioUrl;
-            a.download = filename;
-            a.click();
-          };
-        }
-      };
-    };
+          const { data: publicUrlData } = supabase.storage
+            .from('responses')
+            .getPublicUrl(filename);
 
-    window.stopRecording = function () {
+          const publicUrl = publicUrlData.publicUrl;
+          console.log("Public URL:", publicUrl);
+
+          document.getElementById("uploaded-link").innerHTML =
+            `<a href="${publicUrl}" target="_blank" class="btn btn-link
+    }
+
+    window.stopRecording = function() {
       if (mediaRecorder && mediaRecorder.state !== "inactive") {
         mediaRecorder.stop();
       }
-    };
+    }
 
-    shuffledQuestions = shuffle(questions);
-    document.getElementById("questionText").textContent = shuffledQuestions[currentIndex];
+    window.startPart("part1");
   </script>
 </body>
 </html>
