@@ -1,35 +1,31 @@
 <!DOCTYPE html>
+
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>Roleplay Test - ประกันชีวิตและสุขภาพ</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="icon" href="data:,">
-</head>
+<meta charset="utf-8"/>
+<title>Roleplay Test - ประกันชีวิตและสุขภาพ</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="data:," rel="icon"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/></head>
 <body class="bg-light">
-  <div class="container py-5">
-    <h2 class="mb-4 text-center">Roleplay Test สำหรับพนักงานขายประกัน</h2>
-
-    <div id="test-section" class="mb-4">
-      <h4 id="section-title">ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย</h4>
-      <p id="question-text" class="lead"></p>
-
-      <button class="btn btn-primary mb-2" onclick="startRecording()">🎙️ เริ่มบันทึกเสียง</button>
-      <button class="btn btn-danger mb-2" onclick="stopRecording()">⏹️ หยุดบันทึก</button>
-      <audio id="employee-response" controls class="mb-2"></audio>
-      <a id="download-link" class="btn btn-outline-success mb-3" href="#" download>⬇️ ดาวน์โหลดเสียง</a>
-
-      <button class="btn btn-success" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
-    </div>
-
-    <div class="mt-4">
-      <button class="btn btn-outline-secondary me-2" onclick="startPart('part1')">เริ่มส่วนที่ 1</button>
-      <button class="btn btn-outline-secondary me-2" onclick="startPart('part2')">เริ่มส่วนที่ 2</button>
-      <button class="btn btn-outline-secondary" onclick="startPart('part3')">เริ่มส่วนที่ 3</button>
-    </div>
-  </div>
-
-  <script type="module">
+<div class="container-fluid py-5">
+<h2 class="mb-4 text-center">Roleplay Test สำหรับพนักงานขายประกัน</h2>
+<div class="mb-4" id="test-section">
+<h4 id="section-title">ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย</h4>
+<p class="lead" id="question-text"></p>
+<button class="btn btn-primary mb-2 w-100 mb-2" onclick="startRecording()">🎙️ เริ่มบันทึกเสียง</button>
+<button class="btn btn-danger mb-2 w-100 mb-2" onclick="stopRecording()">⏹️ หยุดบันทึก</button>
+<audio class="mb-2 w-100 mb-2" controls="" id="employee-response"></audio>
+<a class="btn btn-outline-success mb-3 w-100 mb-2" download="" href="#" id="download-link">⬇️ ดาวน์โหลดเสียง</a>
+<button class="btn btn-success w-100 mb-2" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+</div>
+<div class="mt-4">
+<button class="btn btn-outline-secondary me-2 w-100 mb-2" onclick="startPart('part1')">เริ่มส่วนที่ 1</button>
+<button class="btn btn-outline-secondary me-2 w-100 mb-2" onclick="startPart('part2')">เริ่มส่วนที่ 2</button>
+<button class="btn btn-outline-secondary w-100 mb-2" onclick="startPart('part3')">เริ่มส่วนที่ 3</button>
+</div>
+</div>
+<script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
     import { v4 as uuidv4 } from 'https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/esm-browser/index.js';
 
