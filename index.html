@@ -1,4 +1,93 @@
-<script type="module">
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนเข้าสู่ระบบ</title>
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: #004085;
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #messageBox {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ลงทะเบียนผู้เข้าสอบ</h2>
+        <form id="loginForm">
+            <label for="name">ชื่อ-นามสกุล:</label>
+            <input type="text" id="name" name="name" required><br>
+            <label for="email">อีเมล:</label>
+            <input type="email" id="email" name="email" required><br>
+            <label for="department">แผนก:</label>
+            <input type="text" id="department" name="department"><br><br>
+            <button type="submit">เข้าสู่ระบบ</button>
+        </form>
+        <div id="messageBox"></div>
+    </div>
+
+    <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
     const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
@@ -66,5 +155,6 @@
             showMessage(`เกิดข้อผิดพลาด: ${err.message}`, true);
         }
     });
+
 
 
