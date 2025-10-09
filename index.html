@@ -111,18 +111,18 @@
             const email = document.getElementById('email').value;
             const department = document.getElementById('department').value;
 
-            showMessage('กำลังตรวจสอบข้อมูล...', false);
+            showMessage('กำลังประมวลผล...', false);
 
             try {
-                // ตรวจสอบว่ามีผู้ใช้อยู่แล้วหรือไม่
-                const { data: existingUser, error: checkError } = await supabase
+                // ตรวจสอบว่ามีผู้ใช้คนนี้อยู่แล้วหรือไม่
+                const { data: userData, error: userError } = await supabase
                     .from('profiles')
                     .select('*')
                     .eq('email', email)
                     .single();
 
-                if (existingUser) {
-                    // ถ้ามีอยู่แล้ว → เข้าสู่ระบบทันที
+                if (userData) {
+                    // ถ้ามีผู้ใช้คนนี้อยู่แล้ว ให้เข้าสู่ระบบทันที
                     showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
                     setTimeout(() => {
                         window.location.href = "E-Roleplay_Assessment.html";
@@ -130,8 +130,8 @@
                     return;
                 }
 
-                // ถ้ายังไม่มี → ลงทะเบียนใหม่
-                const { data: insertData, error: insertError } = await supabase
+                // ลงทะเบียนใหม่
+                const { data: signUpData, error: signUpError } = await supabase
                     .from('profiles')
                     .insert([
                         {
@@ -141,15 +141,14 @@
                         }
                     ]);
 
-                if (insertError) {
-                    showMessage(`เกิดข้อผิดพลาดในการลงทะเบียน: ${insertError.message}`, true);
+                if (signUpError) {
+                    showMessage(`เกิดข้อผิดพลาดในการลงทะเบียน: ${signUpError.message}`, true);
                 } else {
                     showMessage('ลงทะเบียนสำเร็จ! กำลังนำทาง...', false);
                     setTimeout(() => {
                         window.location.href = "E-Roleplay_Assessment.html";
                     }, 1500);
                 }
-
             } catch (err) {
                 console.error(err);
                 showMessage(`เกิดข้อผิดพลาด: ${err.message}`, true);
@@ -158,8 +157,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
