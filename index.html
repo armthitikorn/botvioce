@@ -88,73 +88,78 @@
     </div>
 
     <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6d3lvdHp6eHljcWZ3ZXJjYWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNTg3MTMsImV4cCI6MjA3MjYzNDcxM30.lgiAf9oBUqsaWGb3u_80wuoKAODQHE_lIBxpGumhrno';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6d3lvdHp6eHljcWZ3ZXJjYWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNTg3MTMsImV4cCI6MjA3MjYzNDcxM30.lgiAf9oBUqsaWGb3u_80wuoKAODQHE_lIBxpGumhrno';
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const form = document.getElementById('loginForm');
-    const messageBox = document.getElementById('messageBox');
+        const form = document.getElementById('loginForm');
+        const messageBox = document.getElementById('messageBox');
 
-    function showMessage(text, isError = false) {
-        messageBox.textContent = text;
-        messageBox.style.display = 'block';
-        messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d1e7dd';
-        messageBox.style.color = isError ? '#721c24' : '#0f5132';
-    }
-
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const department = document.getElementById('department').value;
-
-        showMessage('กำลังตรวจสอบข้อมูล...', false);
-
-        try {
-            // ตรวจสอบว่ามีผู้ใช้อยู่แล้วหรือไม่
-            const { data: existingUser, error: checkError } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('email', email)
-                .single();
-
-            if (existingUser) {
-                // ถ้ามีอยู่แล้ว → เข้าสู่ระบบทันที
-                showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
-                setTimeout(() => {
-                    window.location.href = "E-Roleplay_Assessment.html";
-                }, 1500);
-                return;
-            }
-
-            // ถ้ายังไม่มี → ลงทะเบียนใหม่
-            const { data: insertData, error: insertError } = await supabase
-                .from('profiles')
-                .insert([
-                    {
-                        full_name: name,
-                        email: email,
-                        department: department
-                    }
-                ]);
-
-            if (insertError) {
-                showMessage(`เกิดข้อผิดพลาดในการลงทะเบียน: ${insertError.message}`, true);
-            } else {
-                showMessage('ลงทะเบียนสำเร็จ! กำลังนำทาง...', false);
-                setTimeout(() => {
-                    window.location.href = "E-Roleplay_Assessment.html";
-                }, 1500);
-            }
-
-        } catch (err) {
-            console.error(err);
-            showMessage(`เกิดข้อผิดพลาด: ${err.message}`, true);
+        function showMessage(text, isError = false) {
+            messageBox.textContent = text;
+            messageBox.style.display = 'block';
+            messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d1e7dd';
+            messageBox.style.color = isError ? '#721c24' : '#0f5132';
         }
-    });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const department = document.getElementById('department').value;
+
+            showMessage('กำลังตรวจสอบข้อมูล...', false);
+
+            try {
+                // ตรวจสอบว่ามีผู้ใช้อยู่แล้วหรือไม่
+                const { data: existingUser, error: checkError } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('email', email)
+                    .single();
+
+                if (existingUser) {
+                    // ถ้ามีอยู่แล้ว → เข้าสู่ระบบทันที
+                    showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
+                    setTimeout(() => {
+                        window.location.href = "E-Roleplay_Assessment.html";
+                    }, 1500);
+                    return;
+                }
+
+                // ถ้ายังไม่มี → ลงทะเบียนใหม่
+                const { data: insertData, error: insertError } = await supabase
+                    .from('profiles')
+                    .insert([
+                        {
+                            full_name: name,
+                            email: email,
+                            department: department
+                        }
+                    ]);
+
+                if (insertError) {
+                    showMessage(`เกิดข้อผิดพลาดในการลงทะเบียน: ${insertError.message}`, true);
+                } else {
+                    showMessage('ลงทะเบียนสำเร็จ! กำลังนำทาง...', false);
+                    setTimeout(() => {
+                        window.location.href = "E-Roleplay_Assessment.html";
+                    }, 1500);
+                }
+
+            } catch (err) {
+                console.error(err);
+                showMessage(`เกิดข้อผิดพลาด: ${err.message}`, true);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
 
 
 
