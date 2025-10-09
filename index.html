@@ -1,142 +1,70 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ลงทะเบียน / เข้าสู่ระบบ</title>
-<style>
-    body { font-family: 'Tahoma', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-    .container { background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-    h2 { color: #004085; margin-bottom: 20px; }
-    .toggle-buttons { display: flex; justify-content: space-between; margin-bottom: 20px; }
-    .toggle-buttons button { width: 48%; padding: 10px; border: none; background-color: #007bff; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; }
-    .toggle-buttons button.active { background-color: #0056b3; }
-    form { display: none; text-align: left; }
-    form.active { display: block; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
-    input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
-    button.submit-btn { width: 100%; padding: 12px; border: none; background-color: #28a745; color: white; font-size: 1.1em; font-weight: bold; border-radius: 6px; cursor: pointer; }
-    #messageBox { margin-top: 15px; padding: 10px; border-radius: 8px; display: none; }
-</style>
-</head>
-<body>
-<div class="container">
-    <h2 id="formTitle">ลงทะเบียนผู้เข้าสอบ</h2>
-    <div class="toggle-buttons">
-        <button id="registerBtn" class="active">ลงทะเบียน</button>
-        <button id="loginBtn">เข้าสู่ระบบ</button>
-    </div>
-
-    <!-- Register Form -->
-    <form id="registerForm" class="active">
-        <label for="regName">ชื่อ-นามสกุล:</label>
-        <input type="text" id="regName" required>
-        <label for="regEmail">อีเมล:</label>
-        <input type="email" id="regEmail" required>
-        <label for="regDept">แผนก:</label>
-        <input type="text" id="regDept">
-        <button type="submit" class="submit-btn">ลงทะเบียน</button>
-    </form>
-
-    <!-- Login Form -->
-    <form id="loginForm">
-        <label for="logEmail">อีเมล:</label>
-        <input type="email" id="logEmail" required>
-        <label for="logPassword">รหัสผ่าน:</label>
-        <input type="password" id="logPassword" required>
-        <button type="submit" class="submit-btn">เข้าสู่ระบบ</button>
-    </form>
-
-    <div id="messageBox"></div>
-</div>
-
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
-const supabaseKey = 'YOUR_ANON_KEY'; // ใช้ Anon Key
-const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6d3lvdHp6eHljcWZ3ZXJjYWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwNTg3MTMsImV4cCI6MjA3MjYzNDcxM30.lgiAf9oBUqsaWGb3u_80wuoKAODQHE_lIBxpGumhrno';
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-const registerBtn = document.getElementById('registerBtn');
-const loginBtn = document.getElementById('loginBtn');
-const registerForm = document.getElementById('registerForm');
-const loginForm = document.getElementById('loginForm');
-const formTitle = document.getElementById('formTitle');
-const messageBox = document.getElementById('messageBox');
+    const form = document.getElementById('loginForm');
+    const messageBox = document.getElementById('messageBox');
 
-function showMessage(text, isError = false) {
-    messageBox.textContent = text;
-    messageBox.style.display = 'block';
-    messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d1e7dd';
-    messageBox.style.color = isError ? '#721c24' : '#0f5132';
-}
+    function showMessage(text, isError = false) {
+        messageBox.textContent = text;
+        messageBox.style.display = 'block';
+        messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d1e7dd';
+        messageBox.style.color = isError ? '#721c24' : '#0f5132';
+    }
 
-// Toggle Forms
-registerBtn.addEventListener('click', () => {
-    registerBtn.classList.add('active');
-    loginBtn.classList.remove('active');
-    registerForm.classList.add('active');
-    loginForm.classList.remove('active');
-    formTitle.textContent = 'ลงทะเบียนผู้เข้าสอบ';
-    messageBox.style.display = 'none';
-});
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-loginBtn.addEventListener('click', () => {
-    loginBtn.classList.add('active');
-    registerBtn.classList.remove('active');
-    loginForm.classList.add('active');
-    registerForm.classList.remove('active');
-    formTitle.textContent = 'เข้าสู่ระบบผู้เข้าสอบ';
-    messageBox.style.display = 'none';
-});
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const department = document.getElementById('department').value;
 
-// Register
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('regName').value;
-    const email = document.getElementById('regEmail').value;
-    const dept = document.getElementById('regDept').value;
-    const password = Math.random().toString(36).slice(-8); // สร้างรหัสผ่านสุ่ม
+        showMessage('กำลังตรวจสอบข้อมูล...', false);
 
-    showMessage(`กำลังลงทะเบียน... รหัสผ่านของคุณคือ: ${password}`, false);
+        try {
+            // ตรวจสอบว่ามีผู้ใช้อยู่แล้วหรือไม่
+            const { data: existingUser, error: checkError } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('email', email)
+                .single();
 
-    const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-            data: { full_name: name, department: dept }
+            if (existingUser) {
+                // ถ้ามีอยู่แล้ว → เข้าสู่ระบบทันที
+                showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
+                setTimeout(() => {
+                    window.location.href = "E-Roleplay_Assessment.html";
+                }, 1500);
+                return;
+            }
+
+            // ถ้ายังไม่มี → ลงทะเบียนใหม่
+            const { data: insertData, error: insertError } = await supabase
+                .from('profiles')
+                .insert([
+                    {
+                        full_name: name,
+                        email: email,
+                        department: department
+                    }
+                ]);
+
+            if (insertError) {
+                showMessage(`เกิดข้อผิดพลาดในการลงทะเบียน: ${insertError.message}`, true);
+            } else {
+                showMessage('ลงทะเบียนสำเร็จ! กำลังนำทาง...', false);
+                setTimeout(() => {
+                    window.location.href = "E-Roleplay_Assessment.html";
+                }, 1500);
+            }
+
+        } catch (err) {
+            console.error(err);
+            showMessage(`เกิดข้อผิดพลาด: ${err.message}`, true);
         }
     });
 
-    if (error) {
-        showMessage(`เกิดข้อผิดพลาด: ${error.message}`, true);
-    } else {
-        showMessage(`ลงทะเบียนสำเร็จ! กรุณาจดรหัสผ่าน: ${password}`, false);
-    }
-});
 
-// Login
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('logEmail').value;
-    const password = document.getElementById('logPassword').value;
-
-    showMessage('กำลังเข้าสู่ระบบ...', false);
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
-
-    if (error) {
-        showMessage(`เข้าสู่ระบบไม่สำเร็จ: ${error.message}`, true);
-    } else {
-        showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
-        setTimeout(() => {
-            window.location.href = "E-Roleplay_Assessment.html";
-        }, 1500);
-    }
-});
-</script>
-</body>
-</html>
