@@ -114,14 +114,15 @@
             showMessage('กำลังประมวลผล...', false);
 
             try {
+                // ตรวจสอบว่ามีผู้ใช้อยู่แล้วหรือไม่
                 const { data: userData, error: userError } = await supabase
-                    .from('profiles')
+                    .from('user') // ✅ เปลี่ยนเป็น user
                     .select('*')
                     .eq('email', email)
                     .single();
 
                 if (userData) {
-                    // ✅ แก้ไขตรงนี้: ถ้ามีอีเมลอยู่แล้ว ให้เข้าสู่ระบบทันที
+                    // ถ้ามีอีเมลอยู่แล้ว → เข้าสู่ระบบทันที
                     showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
                     setTimeout(() => {
                         window.location.href = "E-Roleplay_Assessment.html";
@@ -131,7 +132,7 @@
 
                 // ถ้ายังไม่มี → ลงทะเบียนใหม่
                 const { data: signUpData, error: signUpError } = await supabase
-                    .from('profiles')
+                    .from('user') // ✅ เปลี่ยนเป็น user
                     .insert([
                         {
                             full_name: name,
@@ -156,5 +157,3 @@
     </script>
 </body>
 </html>
-
-
