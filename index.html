@@ -102,7 +102,7 @@
 
           await supabase.from('users').insert([{ email, full_name: name, department }]);
           showMessage('ลงทะเบียนสำเร็จ! กำลังนำทาง...', false);
-          setTimeout(() => window.location.href = "index3.html", 1500);
+          setTimeout(() => window.location.href = "index4.html", 1500);
 
         } catch (err) {
           console.error(err);
@@ -136,3 +136,4 @@
   </div>
 </body>
 </html>
+
