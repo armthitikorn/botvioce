@@ -4,43 +4,62 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roleplay Test - ประกันชีวิตและสุขภาพ</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/cssin.css
-https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js</script>
+https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
+https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
 <style>
-  body { background: #f8f9fa; font-family: 'Tahoma', sans-serif; }
-  .container { max-width: 700px; margin-top: 30px; }
+  body { font-family: Tahoma, sans-serif; background: #f8f9fa; }
+  .section-card { margin-bottom: 20px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
   .hidden { display: none; }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container mt-4">
   <h2 class="text-center mb-4 text-primary">Roleplay Test สำหรับพนักงานขายประกัน</h2>
 
   <!-- ส่วนที่ 1 -->
-  <div id="part1" class="card p-3 mb-3">
+  <div id="part1" class="section-card">
     <h4>ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย</h4>
-    <p>🎙️ เริ่มบันทึกเสียง ⏹️ หยุดบันทึก [⬇️ ดาวน์โหลดเสียง]</p>
-    <button class="btn btn-outline-primary" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
-    <p id="progress1" class="mt-2">ทำแล้ว: 0/5</p>
-    <button id="startPart2" class="btn btn-success mt-3 hidden" onclick="startPart(2)">เริ่มส่วนที่ 2</button>
+    <p class="text-muted">ไม่สะดวกทำงานอยู่</p>
+    <div class="d-grid gap-2 mb-2">
+      <button class="btn btn-primary">🎙️ เริ่มบันทึกเสียง</button>
+      <button class="btn btn-danger">⏹️ หยุดบันทึก</button>
+      <button class="btn btn-outline-success">⬇️ ดาวน์โหลดเสียง</button>
+    </div>
+    <button class="btn btn-success w-100 mb-2" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+    <div class="progress mb-2">
+      <div id="progressBar1" class="progress-bar bg-info" style="width:0%">0/5</div>
+    </div>
+    <button id="startPart2" class="btn btn-warning w-100 hidden" onclick="startPart(2)">เริ่มส่วนที่ 2</button>
   </div>
 
   <!-- ส่วนที่ 2 -->
-  <div id="part2" class="card p-3 mb-3 hidden">
+  <div id="part2" class="section-card hidden">
     <h4>ส่วนที่ 2: ตอบข้อโต้แย้งเกี่ยวกับประกันสุขภาพ</h4>
-    <p>🎙️ เริ่มบันทึกเสียง ⏹️ หยุดบันทึก [⬇️ ดาวน์โหลดเสียง]</p>
-    <button class="btn btn-outline-primary" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
-    <p id="progress2" class="mt-2">ทำแล้ว: 0/10</p>
-    <button id="startPart3" class="btn btn-success mt-3 hidden" onclick="startPart(3)">เริ่มส่วนที่ 3</button>
+    <div class="d-grid gap-2 mb-2">
+      <button class="btn btn-primary">🎙️ เริ่มบันทึกเสียง</button>
+      <button class="btn btn-danger">⏹️ หยุดบันทึก</button>
+      <button class="btn btn-outline-success">⬇️ ดาวน์โหลดเสียง</button>
+    </div>
+    <button class="btn btn-success w-100 mb-2" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+    <div class="progress mb-2">
+      <div id="progressBar2" class="progress-bar bg-info" style="width:0%">0/10</div>
+    </div>
+    <button id="startPart3" class="btn btn-warning w-100 hidden" onclick="startPart(3)">เริ่มส่วนที่ 3</button>
   </div>
 
   <!-- ส่วนที่ 3 -->
-  <div id="part3" class="card p-3 mb-3 hidden">
+  <div id="part3" class="section-card hidden">
     <h4>ส่วนที่ 3: ปฏิเสธหลังปิดการขาย</h4>
-    <p>🎙️ เริ่มบันทึกเสียง ⏹️ หยุดบันทึก [⬇️ ดาวน์โหลดเสียง]</p>
-    <button class="btn btn-outline-primary" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
-    <p id="progress3" class="mt-2">ทำแล้ว: 0/10</p>
-    <button id="certificateBtn" class="btn btn-warning mt-3 hidden" onclick="downloadCertificate()">ดาวน์โหลดใบประกาศ</button>
+    <div class="d-grid gap-2 mb-2">
+      <button class="btn btn-primary">🎙️ เริ่มบันทึกเสียง</button>
+      <button class="btn btn-danger">⏹️ หยุดบันทึก</button>
+      <button class="btn btn-outline-success">⬇️ ดาวน์โหลดเสียง</button>
+    </div>
+    <button class="btn btn-success w-100 mb-2" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+    <div class="progress mb-2">
+      <div id="progressBar3" class="progress-bar bg-info" style="width:0%">0/10</div>
+    </div>
+    <button id="certificateBtn" class="btn btn-success w-100 hidden" onclick="downloadCertificate()">ดาวน์โหลดใบประกาศ</button>
   </div>
 </div>
 
@@ -55,9 +74,12 @@ function nextQuestion() {
 }
 
 function updateProgress() {
-  document.getElementById('progress1').textContent = `ทำแล้ว: ${completedQuestions[1]}/5`;
-  document.getElementById('progress2').textContent = `ทำแล้ว: ${completedQuestions[2]}/10`;
-  document.getElementById('progress3').textContent = `ทำแล้ว: ${completedQuestions[3]}/10`;
+  const total = currentPart === 1 ? 5 : 10;
+  const progressBar = document.getElementById(`progressBar${currentPart}`);
+  const done = completedQuestions[currentPart];
+  const percent = Math.min((done / total) * 100, 100);
+  progressBar.style.width = percent + '%';
+  progressBar.textContent = `${done}/${total}`;
 }
 
 function checkProgress() {
@@ -92,4 +114,3 @@ function downloadCertificate() {
 </script>
 </body>
 </html>
-
