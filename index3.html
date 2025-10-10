@@ -4,62 +4,65 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roleplay Test - ประกันชีวิตและสุขภาพ</title>
-https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
-https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js
 <style>
-  body { font-family: Tahoma, sans-serif; background: #f8f9fa; }
-  .section-card { margin-bottom: 20px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  body { font-family: Tahoma, sans-serif; }
   .hidden { display: none; }
+  .modal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); justify-content: center; align-items: center;
+  }
+  .modal-content {
+    background: #fff; padding: 20px; border-radius: 8px; width: 300px; text-align: center;
+  }
 </style>
 </head>
 <body>
-<div class="container mt-4">
-  <h2 class="text-center mb-4 text-primary">Roleplay Test สำหรับพนักงานขายประกัน</h2>
+<h2>Roleplay Test สำหรับพนักงานขายประกัน</h2>
 
-  <!-- ส่วนที่ 1 -->
-  <div id="part1" class="section-card">
-    <h4>ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย</h4>
-    <p class="text-muted">ไม่สะดวกทำงานอยู่</p>
-    <div class="d-grid gap-2 mb-2">
-      <button class="btn btn-primary">🎙️ เริ่มบันทึกเสียง</button>
-      <button class="btn btn-danger">⏹️ หยุดบันทึก</button>
-      <button class="btn btn-outline-success">⬇️ ดาวน์โหลดเสียง</button>
-    </div>
-    <button class="btn btn-success w-100 mb-2" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
-    <div class="progress mb-2">
-      <div id="progressBar1" class="progress-bar bg-info" style="width:0%">0/5</div>
-    </div>
-    <button id="startPart2" class="btn btn-warning w-100 hidden" onclick="startPart(2)">เริ่มส่วนที่ 2</button>
-  </div>
+<!-- ส่วนที่ 1 -->
+<div id="part1">
+  <h3>ส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย</h3>
+  <button>เริ่มบันทึกเสียง</button>
+  <button>หยุดบันทึก</button>
+  #ดาวน์โหลดเสียง</a>
+  <br><br>
+  <button onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+  <p id="progress1">ทำแล้ว: 0/5</p>
+  <button id="startPart2" onclick="startPart(2)" class="hidden">เริ่มส่วนที่ 2</button>
+</div>
 
-  <!-- ส่วนที่ 2 -->
-  <div id="part2" class="section-card hidden">
-    <h4>ส่วนที่ 2: ตอบข้อโต้แย้งเกี่ยวกับประกันสุขภาพ</h4>
-    <div class="d-grid gap-2 mb-2">
-      <button class="btn btn-primary">🎙️ เริ่มบันทึกเสียง</button>
-      <button class="btn btn-danger">⏹️ หยุดบันทึก</button>
-      <button class="btn btn-outline-success">⬇️ ดาวน์โหลดเสียง</button>
-    </div>
-    <button class="btn btn-success w-100 mb-2" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
-    <div class="progress mb-2">
-      <div id="progressBar2" class="progress-bar bg-info" style="width:0%">0/10</div>
-    </div>
-    <button id="startPart3" class="btn btn-warning w-100 hidden" onclick="startPart(3)">เริ่มส่วนที่ 3</button>
-  </div>
+<!-- ส่วนที่ 2 -->
+<div id="part2" class="hidden">
+  <h3>ส่วนที่ 2: ตอบข้อโต้แย้งเกี่ยวกับประกันสุขภาพ</h3>
+  <button>เริ่มบันทึกเสียง</button>
+  <button>หยุดบันทึก</button>
+  #ดาวน์โหลดเสียง</a>
+  <br><br>
+  <button onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+  <p id="progress2">ทำแล้ว: 0/10</p>
+  <button id="startPart3" onclick="startPart(3)" class="hidden">เริ่มส่วนที่ 3</button>
+</div>
 
-  <!-- ส่วนที่ 3 -->
-  <div id="part3" class="section-card hidden">
-    <h4>ส่วนที่ 3: ปฏิเสธหลังปิดการขาย</h4>
-    <div class="d-grid gap-2 mb-2">
-      <button class="btn btn-primary">🎙️ เริ่มบันทึกเสียง</button>
-      <button class="btn btn-danger">⏹️ หยุดบันทึก</button>
-      <button class="btn btn-outline-success">⬇️ ดาวน์โหลดเสียง</button>
-    </div>
-    <button class="btn btn-success w-100 mb-2" onclick="nextQuestion()">➡️ ข้อต่อไป</button>
-    <div class="progress mb-2">
-      <div id="progressBar3" class="progress-bar bg-info" style="width:0%">0/10</div>
-    </div>
-    <button id="certificateBtn" class="btn btn-success w-100 hidden" onclick="downloadCertificate()">ดาวน์โหลดใบประกาศ</button>
+<!-- ส่วนที่ 3 -->
+<div id="part3" class="hidden">
+  <h3>ส่วนที่ 3: ปฏิเสธหลังปิดการขาย</h3>
+  <button>เริ่มบันทึกเสียง</button>
+  <button>หยุดบันทึก</button>
+  #ดาวน์โหลดเสียง</a>
+  <br><br>
+  <button onclick="nextQuestion()">➡️ ข้อต่อไป</button>
+  <p id="progress3">ทำแล้ว: 0/10</p>
+  <button id="certificateBtn" onclick="showCertificate()" class="hidden">แสดงใบประกาศ</button>
+</div>
+
+<!-- Popup ใบประกาศ -->
+<div id="certificateModal" class="modal">
+  <div class="modal-content">
+    <h3>🎉 ใบประกาศนียบัตร</h3>
+    <p>ขอแสดงความยินดีที่ทำแบบทดสอบครบทุกส่วน</p>
+    <p>Roleplay Test - ประกันชีวิตและสุขภาพ</p>
+    <p>วันที่: <span id="date"></span></p>
+    <button onclick="closeModal()">ปิด</button>
   </div>
 </div>
 
@@ -74,12 +77,9 @@ function nextQuestion() {
 }
 
 function updateProgress() {
-  const total = currentPart === 1 ? 5 : 10;
-  const progressBar = document.getElementById(`progressBar${currentPart}`);
-  const done = completedQuestions[currentPart];
-  const percent = Math.min((done / total) * 100, 100);
-  progressBar.style.width = percent + '%';
-  progressBar.textContent = `${done}/${total}`;
+  document.getElementById('progress1').textContent = `ทำแล้ว: ${completedQuestions[1]}/5`;
+  document.getElementById('progress2').textContent = `ทำแล้ว: ${completedQuestions[2]}/10`;
+  document.getElementById('progress3').textContent = `ทำแล้ว: ${completedQuestions[3]}/10`;
 }
 
 function checkProgress() {
@@ -100,16 +100,13 @@ function startPart(part) {
   currentPart = part;
 }
 
-function downloadCertificate() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  doc.setFontSize(22);
-  doc.text("ใบประกาศนียบัตร", 70, 30);
-  doc.setFontSize(16);
-  doc.text("ขอแสดงความยินดีที่ทำแบบทดสอบครบทุกส่วน", 30, 50);
-  doc.text("Roleplay Test - ประกันชีวิตและสุขภาพ", 30, 70);
-  doc.text("วันที่: " + new Date().toLocaleDateString(), 30, 90);
-  doc.save("certificate.pdf");
+function showCertificate() {
+  document.getElementById('date').textContent = new Date().toLocaleDateString();
+  document.getElementById('certificateModal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('certificateModal').style.display = 'none';
 }
 </script>
 </body>
