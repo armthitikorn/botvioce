@@ -4,13 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>แบบทดสอบสุ่มคำถาม</title>
+  <!-- โหลด Bootstrap และ Icons -->
   https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheetargin: 0;
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-iconse>
+    body {
+      margin: 0;
       padding: 0;
       background: linear-gradient(-45deg, #6a11cb, #2575fc, #6a11cb, #2575fc);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
       font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     @keyframes gradientBG {
       0% {background-position: 0% 50%;}
@@ -38,38 +45,36 @@
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <div class="card shadow-lg p-4 mx-auto" style="max-width: 600px;">
-      <h3 class="text-center text-primary mb-4">แบบทดสอบสุ่มคำถาม</h3>
+  <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%;">
+    <h3 class="text-center text-primary mb-4">แบบทดสอบสุ่มคำถาม</h3>
 
-      <!-- ปุ่ม Past1,2,3 -->
-      <div class="d-flex justify-content-center gap-2 mb-3">
-        <button class="btn btn-outline-info btn-animated" onclick="loadPart(1)">Past1</button>
-        <button class="btn btn-outline-info btn-animated" onclick="loadPart(2)">Past2</button>
-        <button class="btn btn-outline-info btn-animated" onclick="loadPart(3)">Past3</button>
-      </div>
+    <!-- ปุ่ม Past1, Past2, Past3 -->
+    <div class="d-flex justify-content-center gap-2 mb-3">
+      <button class="btn btn-outline-info btn-animated" onclick="loadPart(1)">Past1</button>
+      <button class="btn btn-outline-info btn-animated" onclick="loadPart(2)">Past2</button>
+      <button class="btn btn-outline-info btn-animated" onclick="loadPart(3)">Past3</button>
+    </div>
 
-      <div class="progress mb-3">
-        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
-      </div>
-      <div id="questionBox" class="mb-3 fs-5 fw-semibold text-dark"></div>
-      <div class="d-flex justify-content-between mb-3">
-        <button id="prevBtn" class="btn btn-outline-secondary btn-animated" disabled><i class="bi bi-arrow-left-circle"></i> ย้อนกลับ</button>
-        <button id="nextBtn" class="btn btn-primary btn-animated"><i class="bi bi-arrow-right-circle"></i> ถัดไป</button>
-      </div>
-      <div class="d-flex flex-column gap-2">
-        <button id="startRecord" class="btn btn-danger btn-animated"><i class="bi bi-mic-fill"></i> เริ่มบันทึกเสียง</button>
-        <button id="stopRecord" class="btn btn-secondary btn-animated" disabled><i class="bi bi-stop-circle"></i> หยุดบันทึก</button>
-        <audio id="audioPreview" controls style="display:none;"></audio>
-        <a id="downloadAudio" class="btn btn-success btn-animated" style="display:none;"><i class="bi bi-download"></i> ดาวน์โหลดเสียง</a>
-      </div>
+    <div class="progress mb-3">
+      <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+    </div>
+    <div id="questionBox" class="mb-3 fs-5 fw-semibold text-dark"></div>
+    <div class="d-flex justify-content-between mb-3">
+      <button id="prevBtn" class="btn btn-outline-secondary btn-animated" disabled><i class="bi bi-arrow-left-circle"></i> ย้อนกลับ</button>
+      <button id="nextBtn" class="btn btn-primary btn-animated"><i class="bi bi-arrow-right-circle"></i> ถัดไป</button>
+    </div>
+    <div class="d-flex flex-column gap-2">
+      <button id="startRecord" class="btn btn-danger btn-animated"><i class="bi bi-mic-fill"></i> เริ่มบันทึกเสียง</button>
+      <button id="stopRecord" class="btn btn-secondary btn-animated" disabled><i class="bi bi-stop-circle"></i> หยุดบันทึก</button>
+      <audio id="audioPreview" controls style="display:none;"></audio>
+      <a id="downloadAudio" class="btn btn-success btn-animated" style="display:none;"><i class="bi bi-download"></i> ดาวน์โหลดเสียง</a>
     </div>
   </div>
 
   <script>
-    const part1 = [/* คำถามกลุ่ม 1 */];
-    const part2 = [/* คำถามกลุ่ม 2 */];
-    const part3 = [/* คำถามกลุ่ม 3 */];
+    const part1 = ["ขอโทษครับ/ค่ะ ไม่สนใจต้นสาย","ไม่สะดวกคุยตอนนี้ครับ/ค่ะ","ไม่รับสายขายของครับ/ค่ะ"];
+    const part2 = ["ประกันสุขภาพครอบคลุมโรคเรื้อรังหรือไม่?","ถ้าเข้าโรงพยาบาลเอกชนจะจ่ายเต็มไหม?","มีค่าห้องสูงสุดเท่าไหร่?"];
+    const part3 = ["คิดว่าแพงเกินไปครับ/ค่ะ","ขอคิดดูก่อนครับ/ค่ะ","ต้องปรึกษาครอบครัวก่อนครับ/ค่ะ"];
 
     const allQuestions = [...part1, ...part2, ...part3];
     let shuffled = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 10);
@@ -157,5 +162,3 @@
     });
   </script>
 </body>
-</html>
-
