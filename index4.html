@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>แบบทดสอบสุ่มคำถาม</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrapcss/bootstrap.min.css
+  https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(-45deg, #6a11cb, #2575fc, #6a11cb, #2575fc);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .card {
+      border-radius: 1rem;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .btn-animated {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-animated:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    #questionBox {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="card shadow-lg p-4 mx-auto" style="max-width: 600px;">
+      <h3 class="text-center text-primary mb-4">แบบทดสอบสุ่มคำถาม</h3>
+
+      <!-- ปุ่ม Past1,2,3 -->
+      <div class="d-flex justify-content-center gap-2 mb-3">
+        <button class="btn btn-outline-info btn-animated" onclick="loadPart(1)">Past1</button>
+        <button class="btn btn-outline-info btn-animated" onclick="loadPart(2)">Past2</button>
+        <button class="btn btn-outline-info btn-animated" onclick="loadPart(3)">Past3</button>
+      </div>
+
+      <div class="progress mb-3">
+        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+      </div>
+      <div id="questionBox" class="mb-3 fs-5 fw-semibold text-dark"></div>
+      <div class="d-flex justify-content-between mb-3">
+        <button id="prevBtn" class="btn btn-outline-secondary btn-animated" disabled><i class="bi bi-arrow-left-circle"></i> ย้อนกลับ</button>
+        <button id="nextBtn" class="btn btn-primary btn-animated"><i class="bi bi-arrow-right-circle"></i> ถัดไป</button>
+      </div>
+      <div class="d-flex flex-column gap-2">
+        <button id="startRecord" class="btn btn-danger btn-animated"><i class="bi bi-mic-fill"></i> เริ่มบันทึกเสียง</button>
+        <button id="stopRecord" class="btn btn-secondary btn-animated" disabled><i class="bi bi-stop-circle"></i> หยุดบันทึก</button>
+        <audio id="audioPreview" controls style="display:none;"></audio>
+        <a id="downloadAudio" class="btn btn-success btn-animated" style="display:none;"><i class="bi bi-download"></i> ดาวน์โหลดเสียง</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const part1 = [
+      "ขอโทษครับ/ค่ะ ไม่สนใจต้นสาย","ไม่สะดวกคุยตอนนี้ครับ/ค่ะ","ไม่รับสายขายของครับ/ค่ะ","ไม่สนใจประกันครับ/ค่ะ","มีประกันอยู่แล้วครับ/ค่ะ","ไม่อยากเสียเวลา","ไม่เคยซื้อของทางโทรศัพท์","ไม่ไว้ใจการขายทางโทรศัพท์","ไม่อยากให้ข้อมูลส่วนตัว","ไม่สนใจเรื่องสุขภาพตอนนี้","ไม่สะดวกทำงานอยู่","ไม่สะดวกขับรถอยู่","ไม่สะดวกคุยช่วงเช้า","ไม่สะดวกโทรมาบ่อยมาก","ไม่สะดวก ไม่ฟัง","ประกันมีเยอะแล้ว","ใครให้เบอร์โทรมาติดต่อ","ยกเลิกบัตรเครดิตไปแล้ว","ไม่ชอบประกันชีวิต","ยกเลิกไปหมดแล้ว","มิจฉาชีพหรือป่าว"
+    ];
+    const part2 = [
+      "ประกันสุขภาพครอบคลุมโรคเรื้อรังหรือไม่?","ถ้าเข้าโรงพยาบาลเอกชนจะจ่ายเต็มไหม?","มีค่าห้องสูงสุดเท่าไหร่?","ต้องสำรองจ่ายก่อนหรือไม่?","มีเงื่อนไขการเคลมอะไรบ้าง?","ถ้าเป็นโรคที่มีมาก่อนจะคุ้มครองไหม?","มีระยะเวลารอคอยหรือไม่?","เบี้ยประกันปรับขึ้นทุกปีหรือไม่?","สามารถใช้ร่วมกับสิทธิ์ประกันสังคมได้ไหม?","มีวงเงินคุ้มครองสูงสุดเท่าไหร่?","ถ้าไม่ได้ใช้บริการเลย จะได้เงินคืนไหม?","มีบริการเคลมออนไลน์หรือไม่?","สามารถเลือกโรงพยาบาลเองได้ไหม?","มีคุ้มครองกรณีอุบัติเหตุหรือไม่?","ถ้าเปลี่ยนงานจะยังใช้ประกันได้ไหม?","มีคุ้มครองกรณีโรคร้ายแรงหรือไม่?","สามารถซื้อให้ครอบครัวได้ไหม?","มีบริการช่วยเหลือฉุกเฉินหรือไม่?","มีเงื่อนไขการยกเลิกกรมธรรม์อย่างไร?","สามารถจ่ายเบี้ยผ่านบัตรเครดิตได้ไหม?","ข้อมูลเยอะจัง ส่งเอกสารให้ดูก่อนได้มัย","เหมือนที่มีอยู่ เหมือนๆกันเลย","ความคุ้มครองน้อยจัง ไม่ตอบโจทย์","ค่าเบี้ยแพงจัง","ไม่อยากได้แบบนี้ อยากได้แบบอื่น","ขอปรึกษาพ่อ แม่ แฟน ดูก่อน","ช่วงนี้ค่าใช้จ่ายเยอะ","ขอคิดดูก่อน","กลัวซ้ำซ้อน เบิกเคลมไม่ได้","มีเยอะแล้ว แค่ฟังๆดูก่อน","ทำแล้วติดต่อยาก ไม่รู้จะปรึกษาใครเวลามีปัญหาในกรมธรรม์","ที่พูดมาได้จริงหรอ","ไม่มั่นใจในบริษัท ไม่ชอบซื้อผ่านโทรศัพท์","ได้กำไรน้อย ขาดทุน กว่าจะได้จุดคุ้มทุน","ซื้อไปก็ไม่ได้ใช้","เดียวๆ ต้องทำงานต่อก่อน","ฟังแล้วไม่น่าสนใจเลย","มีประกันสังคม ประกันกลุ่มบริษัทอยู่แล้ว","หักลดหย่อนภาษีเต็ม","ที่บ้านเป็นตัวแทน","ซื้อไว้หมดทุกตัวแล้ว"
+    ];
+    const part3 = [
+      "คิดว่าแพงเกินไปครับ/ค่ะ","ขอคิดดูก่อนครับ/ค่ะ","ต้องปรึกษาครอบครัวก่อนครับ/ค่ะ","ยังไม่พร้อมตัดสินใจครับ/ค่ะ","ไม่มั่นใจในบริษัทครับ/ค่ะ","กลัวถูกหลอกครับ/ค่ะ","มีประกันอยู่แล้วครับ/ค่ะ","ไม่เห็นความจำเป็นครับ/ค่ะ","ไม่อยากผูกมัดระยะยาวครับ/ค่ะ","ไม่มั่นใจว่าจะได้ใช้ครับ/ค่ะ","ยังๆ ยังไม่ทำนะ","ขอดูวงเงินบัตรเครดิตก่อน รอบตัดบัตรเครดิตไม่สะดวก","ต้องทำเลยหรอ","คิดดูก่อนสักวัน 2วันได้มัย","ขอเปรียบเทียบกับกรมธรรม์เก่าก่อนนะ","ยังไม่ให้คำตอบวันนี้","โยนให้คนอื่นตัดสิ้นใจแทน เช่น แฟน","รอเงินเดือนออกก่อน"
+    ];
+
+    let shuffled = [...part1, ...part2, ...part3].sort(() => 0.5 - Math.random()).slice(0, 10);
+    let currentIndex = 0;
+
+    const questionBox = document.getElementById("questionBox");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const progressBar = document.getElementById("progressBar");
+
+    function updateQuestion() {
+      questionBox.textContent = shuffled[currentIndex];
+      progressBar.style.width = ((currentIndex + 1) / shuffled.length * 100) + "%";
+      progressBar.textContent = Math.round((currentIndex + 1) / shuffled.length * 100) + "%";
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === shuffled.length - 1;
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (currentIndex < shuffled.length - 1) {
+        currentIndex++;
+        updateQuestion();
+      }
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateQuestion();
+      }
+    });
+
+    function loadPart(partNumber) {
+      let selectedPart = [];
+      if (partNumber === 1) selectedPart = part1;
+      else if (partNumber === 2) selectedPart = part2;
+      else if (partNumber === 3) selectedPart = part3;
+
+      shuffled = selectedPart.sort(() => 0.5 - Math.random()).slice(0, 10);
+      currentIndex = 0;
+      updateQuestion();
+
+      audioPreview.style.display = 'none';
+      downloadBtn.style.display = 'none';
+    }
+
+    updateQuestion();
+
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    const startBtn = document.getElementById("startRecord");
+    const stopBtn = document.getElementById("stopRecord");
+    const downloadBtn = document.getElementById("downloadAudio");
+    const audioPreview = document.getElementById("audioPreview");
+
+    startBtn.addEventListener("click", async () => {
+      recordedChunks = [];
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = event => {
+        if (event.data.size > 0) recordedChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+        downloadBtn.href = url;
+        downloadBtn.download = 'recorded_audio.webm';
+        downloadBtn.style.display = 'inline-block';
+        audioPreview.src = url;
+        audioPreview.style.display = 'block';
+      };
+
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+    });
+
+    stopBtn.addEventListener("click", () => {
+      mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
