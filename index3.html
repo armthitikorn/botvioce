@@ -5,62 +5,97 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Roleplay Test</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      background: linear-gradient(-45deg, #6a11cb, #2575fc, #6a11cb, #2575fc);
+      background: linear-gradient(-45deg, #74ebd5, #9face6, #a18cd1, #fbc2eb);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       font-family: 'Segoe UI', sans-serif;
     }
-
     @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
-
     .card {
-      width: 100%;
-      max-width: 500px;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 30px rgba(0,0,0,0.2);
-      background-color: white;
-      animation: fadeIn 1.5s ease forwards;
+      animation: fadeInUp 1s ease forwards;
       opacity: 0;
+      transform: translateY(30px);
     }
-
-    @keyframes fadeIn {
-      to { opacity: 1; transform: translateY(0); }
-      from { opacity: 0; transform: translateY(20px); }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-
-    .btn-custom {
-      transition: all 0.3s ease;
+    .btn-animated {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
-    .btn-custom:hover {
+    .btn-animated:hover {
       transform: scale(1.05);
-      background-color: #2575fc;
-      color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 <body>
-  <div class="card text-center">
-    <h3 class="mb-4 text-primary">Roleplay Test</h3>
-    <p>Roleplay Test - ประกันชีวิตและสุขภาพRoleplay Test สำหรับพนักงานขายประกันส่วนที่ 1: โน้มน้าวเมื่อลูกค้าปฏิเสธต้นสาย🎙️ เริ่มบันทึกเสียง⏹️ หยุดบันทึก⬇️ ดาวน์โหลดเสียง➡️ ข้อต่อไปเริ่มส่วนที่ 1เริ่มส่วนที่ 2เริ่มส่วนที่ 3</p>
-    <div class="d-grid gap-2 mt-4">
-      <button class="btn btn-outline-primary btn-custom">เริ่มบทบาทสมมติ</button>
-      <button class="btn btn-outline-secondary btn-custom">ย้อนกลับ</button>
+  <div class="container py-5">
+    <div class="card shadow-lg p-4 mx-auto" style="max-width: 600px;">
+      <h3 class="text-center text-primary mb-4">Roleplay Test</h3>
+      <div class="d-grid gap-3">
+        <button class="btn btn-primary btn-animated"><i class="bi bi-play-circle"></i> เริ่มส่วนที่ 1</button>
+        <button class="btn btn-primary btn-animated"><i class="bi bi-play-circle"></i> เริ่มส่วนที่ 2</button>
+        <button class="btn btn-primary btn-animated"><i class="bi bi-play-circle"></i> เริ่มส่วนที่ 3</button>
+        <button id="startRecord" class="btn btn-danger btn-animated"><i class="bi bi-mic-fill"></i> เริ่มบันทึกเสียง</button>
+        <button id="stopRecord" class="btn btn-secondary btn-animated" disabled><i class="bi bi-stop-circle"></i> หยุดบันทึก</button>
+        <a id="downloadAudio" class="btn btn-success btn-animated" style="display:none;"><i class="bi bi-download"></i> ดาวน์โหลดเสียง</a>
+        <button class="btn btn-warning btn-animated"><i class="bi bi-arrow-right-circle"></i> ข้อต่อไป</button>
+      </div>
     </div>
   </div>
+
+  <script>
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const startBtn = document.getElementById('startRecord');
+      const stopBtn = document.getElementById('stopRecord');
+      const downloadBtn = document.getElementById('downloadAudio');
+
+      if (startBtn && stopBtn && downloadBtn) {
+        startBtn.addEventListener('click', async () => {
+          recordedChunks = [];
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+
+          mediaRecorder.ondataavailable = event => {
+            if (event.data.size > 0) recordedChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+            const url = URL.createObjectURL(blob);
+            downloadBtn.href = url;
+            downloadBtn.download = 'recorded_audio.webm';
+            downloadBtn.style.display = 'inline-block';
+          };
+
+          mediaRecorder.start();
+          startBtn.disabled = true;
+          stopBtn.disabled = false;
+        });
+
+        stopBtn.addEventListener('click', () => {
+          mediaRecorder.stop();
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+        });
+      }
+    });
+  </script>
 </body>
-</html
+</html>
+
