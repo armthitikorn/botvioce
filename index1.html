@@ -1,142 +1,90 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ลงทะเบียน / เข้าสู่ระบบ</title>
-    <style>
-        body {
-            font-family: 'Tahoma', sans-serif;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ลงทะเบียนเข้าสู่ระบบ</title>
+  https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    // ✅ ตั้งค่า Supabase
+    const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
+    const supabaseKey = 'YOUR_ANON_KEY'; // ใช้ anon key ของคุณ
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    function showMessage(text, isError = false) {
+      const messageBox = document.getElementById('messageBox');
+      messageBox.textContent = text;
+      messageBox.style.display = 'block';
+      messageBox.className = isError ? 'alert alert-danger mt-3' : 'alert alert-success mt-3';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('registerForm');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const department = document.getElementById('department').value;
+
+        if (!email) {
+          showMessage('กรุณากรอกอีเมล', true);
+          return;
         }
-        .container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
+
+        showMessage('กำลังตรวจสอบ...', false);
+
+        try {
+          // ✅ ตรวจสอบว่ามีผู้ใช้อยู่แล้วหรือไม่ในตาราง users
+          const { data: userData } = await supabase
+            .from('users')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+          if (userData) {
+            // ถ้ามีแล้ว → เข้าระบบทันที
+            showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
+            setTimeout(() => window.location.href = "index2.html", 1500);
+            return;
+          }
+
+          // ✅ ถ้าไม่มี → ลงทะเบียนใหม่
+          await supabase.from('users').insert([{ email, full_name: name, department }]);
+          showMessage('ลงทะเบียนสำเร็จ! กำลังนำทาง...', false);
+          setTimeout(() => window.location.href = "index2.html", 1500);
+
+        } catch (err) {
+          console.error(err);
+          showMessage(`เกิดข้อผิดพลาด: ${err.message}`, true);
         }
-        h2 {
-            color: #004085;
-            margin-bottom: 20px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-        button {
-            width: 48%;
-            padding: 12px;
-            margin: 5px;
-            border: none;
-            background-color: #28a745;
-            color: white;
-            font-size: 1em;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #messageBox {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            display: none;
-        }
-    </style>
+      });
+    });
+  </script>
 </head>
-<body>
-    <div class="container">
-        <h2>ลงทะเบียน / เข้าสู่ระบบ</h2>
-        <input type="email" id="email" placeholder="อีเมล" required>
-        <input type="password" id="password" placeholder="รหัสผ่าน" required>
-        <div>
-            <button id="signupBtn">ลงทะเบียน</button>
-            <button id="loginBtn">เข้าสู่ระบบ</button>
+<body class="bg-light">
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 400px;">
+      <h3 class="text-center mb-4 text-primary">ลงทะเบียนผู้เข้าสอบ</h3>
+      <form id="registerForm">
+        <div class="mb-3">
+          <label for="name" class="form-label">ชื่อ-นามสกุล:</label>
+          <input type="text" id="name" name="name" class="form-control" required>
         </div>
-        <div id="messageBox"></div>
+        <div class="mb-3">
+          <label for="email" class="form-label">อีเมล:</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="department" class="form-label">แผนก:</label>
+          <input type="text" id="department" name="department" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success w-100">เข้าสู่ระบบ</button>
+      </form>
+      <div id="messageBox" style="display:none;"></div>
     </div>
-
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-        const supabaseUrl = 'https://wzwyotzzxycqfwercakh.supabase.co';
-        const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'; // ใช้ Anon Key ของคุณ
-        const supabase = createClient(supabaseUrl, supabaseKey);
-
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const messageBox = document.getElementById('messageBox');
-
-        function showMessage(text, isError = false) {
-            messageBox.textContent = text;
-            messageBox.style.display = 'block';
-            messageBox.style.backgroundColor = isError ? '#f8d7da' : '#d1e7dd';
-            messageBox.style.color = isError ? '#721c24' : '#0f5132';
-        }
-
-        document.getElementById('signupBtn').addEventListener('click', async () => {
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            if (!email || !password) {
-                showMessage('กรุณากรอกอีเมลและรหัสผ่าน', true);
-                return;
-            }
-
-            showMessage('กำลังลงทะเบียน...', false);
-
-            const { data, error } = await supabase.auth.signUp({
-                email: email,
-                password: password
-            });
-
-            if (error) {
-                showMessage(`เกิดข้อผิดพลาด: ${error.message}`, true);
-            } else {
-                showMessage('ลงทะเบียนสำเร็จ! กรุณาเข้าสู่ระบบ', false);
-            }
-        });
-
-        document.getElementById('loginBtn').addEventListener('click', async () => {
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            if (!email || !password) {
-                showMessage('กรุณากรอกอีเมลและรหัสผ่าน', true);
-                return;
-            }
-
-            showMessage('กำลังเข้าสู่ระบบ...', false);
-
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-
-            if (error) {
-                showMessage(`เข้าสู่ระบบล้มเหลว: ${error.message}`, true);
-            } else {
-                showMessage('เข้าสู่ระบบสำเร็จ! กำลังนำทาง...', false);
-                setTimeout(() => {
-                    window.location.href = "E-Roleplay_Assessment.html";
-                }, 1500);
-            }
-        });
-    </script>
+  </div>
 </body>
 </html>
-
-
